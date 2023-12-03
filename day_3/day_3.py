@@ -14,30 +14,25 @@ f = open("input.txt", "r").readlines()
     # ".664.598..\n"]
 
 
-def get_indx(f, i, j):
-    nb=0
-    l = 0
+def get_nb(f, i, j):
     while f[i][j].isdigit():
-        nb=nb*10+int(f[i][j])
+        j -= 1
+    l=1
+    nb=0
+    while f[i][j+l].isdigit():
+        nb=nb*10+int(f[i][j+l])
         l += 1
-        j += 1
-    return nb, l
+    return nb, l-1
 
 def check_char(f, i, j, l):
-    r=f[i][j+l]
-    if j==0:
-        j = 1
-        l-=1
-    else:r+=f[i][j-1]
-    if i > 0:
-        r += f[i-1][j-1:j+l+1]
-    if i != len(f)-1:
-        r += f[i+1][j-1:j+l+1]
-
-    if set(r) != {'.'} and set(r)!={'.','\n'}:
+    if len(set(f[i][j+l] + f[i][j-1] + f[i-1][j-1:j+l+1] + f[i+1][j-1:j+l+1]))-1:
         return True
     return False
 
+for i in range(len(f)):
+    f[i]='.'+f[i][:-1]+'.'
+f.append('.'*len(f[0]))
+f.insert(0, '.'*len(f[0]))
 
 t = 0
 for i in range(len(f)):
@@ -47,23 +42,12 @@ for i in range(len(f)):
             l-=1
             continue
         if f[i][j].isdigit():
-            nb, l = get_indx(f, i, j)
+            nb, l = get_nb(f, i, j)
             if check_char(f, i, j, l):
                 t+= nb
 
 print("part 1:", t)
 
-
-
-def get_nb(f, i, j):
-    while f[i][j].isdigit():
-        j -= 1
-    j+=1
-    nb=0
-    while f[i][j].isdigit():
-        nb=nb*10+int(f[i][j])
-        j+=1
-    return nb
 
 def gear_ratio(f, i, j):
     inds = [[i-1, j-1], [i-1, j], [i-1, j+1], [i, j-1], [i, j+1], [i+1, j-1], [i+1, j], [i+1, j+1]]
@@ -79,16 +63,9 @@ def gear_ratio(f, i, j):
     for i in range(len(r)):
         if r[i].isdigit():
             c += 1
-            nb *= get_nb(f, *inds[i])
+            nb *= get_nb(f, *inds[i])[0]
     if c != 2: return 0
     return nb
-
-
-
-for i in range(len(f)):
-    f[i]='.'+f[i][:-1]+'.'
-f.append('.'*len(f[0]))
-f.insert(0, '.'*len(f[0]))
 
 t=0
 for i in range(len(f)):
