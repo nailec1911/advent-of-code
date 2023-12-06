@@ -21,6 +21,6 @@ def last(time,r):
     return 0
 
 s=1
-for i in range(len(a)):
+for i in range(len(a[0])):
     s*=last(a[0][i],a[1][i])-first(a[0][i],a[1][i])+1
 print("part 1:",s,"\npart 2:",last(b[0],b[1])-first(b[0],b[1])+1)
