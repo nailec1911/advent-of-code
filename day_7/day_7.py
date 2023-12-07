@@ -1,22 +1,27 @@
 #!/usr/bin/python3
 f=list(open("input.txt"))
 
-f=["32T3K 765\n",
-"T55J5 684\n",
-"KK677 28\n",
-"KTJJT 220\n",
-"QQQJA 483\n"]
+# f=["32T3K 765\n",
+# "T55J5 684\n",
+# "KK677 28\n",
+# "KTJJT 220\n",
+# "QQQJA 483\n"]
 
-def value(e,p):
+def value(e):
+    c=[0,16,32,64,80,256,1024]
     t=0
     while e:
         d=e.count(e[0])
-        if p: d+=e.count('J')
-        if d>1:
-            t+=(d-1)/2+(d>2)+(d>3)
+        if e[0]!='J' and e[0]!='.' and d>1:
+            t+=1<<d*2
         e=e.replace(e[0],'')
-    print(t)
-    return int(t*2)
+    return c.index(t)
+
+def test(bid):
+    p=value(bid[::])
+    if p<6:
+        for i in [1]*bid.count('J'):p=p+1+(0<p<4)
+        if p>6:p=6
 
 def s(c): return list(h).index(c)
 def compare(a,b):
@@ -37,18 +42,18 @@ def get_tot(r):
             i+=1
     return t
 
-ranks=[[] for i in range(30)]
-ranks2=[[] for i in range(30)]
+ranks=[[] for i in range(9)]
+ranks2=[[] for i in range(9)]
 for elt in f:
-    print(elt)
-    bid,val=elt[:-1].split()
-    p=value(bid[::],0)
+    bid,val=elt.split(' ')
+    p=value(bid[::])
     h='AKQJT98765432'
     place(ranks, p, bid, int(val))
-    # h='AKQT98765432J'
-    # p=value(bid[::],1)
-    # print(p)
-    # place(ranks2, p, bid, int(val))
+    h='AKQT98765432J'
+    p=value(bid[::])
+    if p<6:
+        for i in [1]*bid.count('J'):p=p+1+(0<p<4)
+        if p>6:p=6
+    place(ranks2, p, bid, int(val))
 
-print('\n\nend',ranks2)
-print(get_tot(ranks),get_tot(ranks2))
+print("part 1:",get_tot(ranks),"\npart 2:",get_tot(ranks2))
