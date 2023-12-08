@@ -10,11 +10,11 @@ def t(l,c):
     if z<b:r+=[z,b],
     break
   l+=r
-f=open("input.txt","r").read().split('\n')
-s=[[int(e),int(e)+1]for e in f.pop(0)[7:].split(' ')]
+f=list(open("input.txt"))
+s=[[int(e),int(e)+1]for e in f.pop(0)[7:].split()]
 l=[[a[0],a[0]+b[0]]for a,b in zip(s,s[1:])][::2]
 while f:
- f.pop(0)*2;f.pop(0);c=[]
- while f and f[0]!="":c+=[int(e) for e in f.pop(0).split(' ')],
+ f=f[2:];c=[]
+ while f and f[0]!="\n":c+=[int(e)for e in f.pop(0).split()],
  t(s,c);t(l,c)
 print("part 1:",min(s)[0],"\npart 2:",min(l)[0])
