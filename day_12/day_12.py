@@ -9,11 +9,9 @@ f=list(open('input.txt'))
 # "????.######..#####. 1,6,5\n",
 # "?###???????? 3,2,1\n"]
 
-
-from functools import cache
-
-@cache
 def possibilities(l,n,li,ni):
+    k=(li,ni)
+    if k in MEM: return MEM[k]
     r=0
     if ni>=len(n):
         if '#'in l[li:]: return 0
@@ -28,22 +26,19 @@ def possibilities(l,n,li,ni):
         if l[li+i]=='#':break
         if len(l[li:])-1<sum(n[ni:])+len(n[ni:]):break
         i+=1
-
+    MEM[k]=r
     return r
-
-
 
 t1=t2=0
 for i in range(len(f)):
-    # print(i)
     l,n=f[i].split(' ')
     n=[int(e) for e in n.split(',')]
-    t1+=possibilities(tuple(l+' '),tuple(n),0,0)
-    t2+=possibilities(tuple(((l+'?')*5)[:-1]+' '),tuple(n*5),0,0)
-    # print(t2)
+    MEM={}
+    t1+=possibilities(l+' ',n,0,0)
+    MEM={}
+    t2+=possibilities(((l+'?')*5)[:-1]+' ',n*5,0,0)
 
 print(t1,t2)
-
 
 
 # print("part 1:",x,"\npart 2:",y)
