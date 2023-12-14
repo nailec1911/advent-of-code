@@ -17,7 +17,6 @@ f=list(open("input.txt"))
 def go_left(l):
     r=0
     s=len(l)
-    # print(l)
     for i in range(s-1):
         if l[i+1]=='O':
             d=i+1
@@ -25,8 +24,6 @@ def go_left(l):
             if i+1!=d:
                 l[i+1]='O'
                 l[d]='.'
-    for i in range(s):
-        if l[i]=='O':r+=s-i
     return r
 
 def tilt(f):
@@ -37,42 +34,43 @@ def tilt(f):
 # return [list(a) for a in zip(*f)]
 
 
+def to_north(f):
+    for e in f:go_left(e)
+    return
+
 def val(f):
     t=0
-    for e in f:t+=go_left(e)
+    l=len(f)
+    for i in range(len(f)):
+        t+=(l-i)*f[i].count('O')
     return t
-
 
 def cycle(f):
     for j in range(4):
         f=tilt(f)
-        # for e in f:print(''.join(e))
-        u=val(f)
+        to_north(f)
         f=tilt(f)
         f=tilt(f)
-        # print()
-    return f,u
+    return f,val(f)
 
 f=[e[:-1] for e in f]
-t=val(tilt(f))
-print('part 1:',t)
-MEM=[]
-u=0
-for i in range(1000000000):
-    # print(i)
-    a=''.join(''.join(e) for e in f)
-    MEM+=a,
-    f,u=cycle(f)
-    # for e in f:print(''.join(e))
-    # print()
-    if ''.join(''.join(e) for e in f) in MEM:
-        break
-    # if a==''.join(''.join(e) for e in f):
-        # break
+p=tilt(f)
+to_north(p)
+p=tilt(tilt(tilt(p)))
+print('part 1:',val(p))
 
-print(i)
-print(1000000000%i)
-for i in range(1000000000%i):
-    f,u=cycle(f)
-# for e in f:print(''.join(e))
-print('part 2:',u)
+
+MEM=[]
+values=[]
+for i in range(1000000000):
+    MEM+=''.join(''.join(e) for e in f),
+    f,v=cycle(f)
+    values+=v,
+    b=''.join(''.join(e) for e in f)
+    if b in MEM:
+        break
+
+start_patern=MEM.index(b)
+pat = len(MEM)-start_patern
+rep=(1000000000-start_patern)%pat+start_patern-1
+print('part 2:',values[rep])
