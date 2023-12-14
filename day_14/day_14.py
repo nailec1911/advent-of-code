@@ -14,51 +14,29 @@ f=list(open("input.txt"))
 # '#OO..#....\n',
 # ]
 
-def go_left(l):
-    r=0
-    s=len(l)
-    for i in range(s-1):
-        if l[i+1]=='O':
-            d=i+1
-            while i>=0 and l[i]=='.':i-=1
-            if i+1!=d:
-                l[i+1]='O'
-                l[d]='.'
-    return r
-
-def tilt(f):
-    res=[]
-    for i in range(len(f[0])):
-        res.insert(0,[e[i]for e in f])
-    return res
-# return [list(a) for a in zip(*f)]
-
-
-def to_north(f):
-    for e in f:go_left(e)
-    return
+def north(f):
+    f=[*zip(*f)]
+    for i in range(len(f)):
+        f[i]='#'.join(map(lambda e:''.join(reversed(sorted(e))),''.join(f[i]).split('#')))
+    return [*zip(*f)]
 
 def val(f):
-    t=0
-    l=len(f)
-    for i in range(len(f)):
-        t+=(l-i)*f[i].count('O')
-    return t
+   l=len(f)
+   return sum([f[i].count('O')*(l-i) for i in range(l)])
+# print('#'.join(map(lambda e:''.join(reversed(sorted(e))), s.split('#'))))
+
+def rot(f):
+    return [[f[j][i] for j in range(len(f)-1,-1,-1)] for i in range(len(f[0]))]
 
 def cycle(f):
-    for j in range(4):
-        f=tilt(f)
-        to_north(f)
-        f=tilt(f)
-        f=tilt(f)
+    for i in 1,2,3,4:
+        f=north(f)
+        f=rot(f)
     return f,val(f)
 
 f=[e[:-1] for e in f]
-p=tilt(f)
-to_north(p)
-p=tilt(tilt(tilt(p)))
-print('part 1:',val(p))
 
+print('part 1:',val(north(f)))
 
 MEM=[]
 values=[]
