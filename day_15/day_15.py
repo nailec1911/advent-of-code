@@ -1,36 +1,14 @@
 #!/usr/bin/python3
-f=open('input.txt').read()[:-1]
-
-
-def hash(val):
-    v=0
-    for l in val:v=(v+ord(l))*17%256
-    return v
-
-def remove(boxes,label):
-    box=boxes[hash(label)]
-    for e in box:
-        if e[0]==label:box.remove(e)
-
-def add(boxes,label,foc):
-    box=boxes[hash(label)]
-    for e in box:
-        if e[0]==label:
-            e[1]=foc
-            return
-    box+=[label,foc],
-
-f=f.split(',')
-boxes={i:[] for i in range(256)}
-
-t=0
-for e in f:
-    t+=hash(e)
-    if e[-1]=='-':
-        remove(boxes,e[:-1])
-    else:
-        box,val=e.split('=')
-        add(boxes,box,int(val))
-
-print(t)
-print(sum((box+1)*(i+1)*l[i][1] for box,l in boxes.items()for i in range(len(l))))
+def h(val):
+ v=0
+ for l in val:v=(v+ord(l))*17%256
+ return v
+d=[{}for i in range(257)];t=0
+for e in open('input.txt').read().split(','):
+ t+=h(e)
+ if'-'in e:l,f=e[:-1],0
+ else:l,f=e.split('=')
+ b=d[h(l)+1]
+ if f:b[l]=int(f)
+ elif l in b:b.pop(l)
+print("part 1:",t,"\npart 2:",sum(i*v*(j+1)for i in range(257)for j,v in enumerate(d[i].values())))
