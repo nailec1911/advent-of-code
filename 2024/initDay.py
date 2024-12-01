@@ -67,8 +67,6 @@ def download_input(year: int, day: int):
         file.write(response.text)
 
     daypath = os.path.join(directory, f"day_{day:02}.py")
-    with open(daypath, "w", encoding="utf-8") as file:
-        file.write(response.text)
 
     print(f"Files {inputspath} and {daypath} properly created")
 
@@ -83,7 +81,7 @@ if __name__ == "__main__":
     try:
         # Parse the day number from the arguments
         dayNb = int(sys.argv[1])
-        download_input(2023, dayNb)
+        download_input(2024, dayNb)
     except ValueError:
         print("Day number must be an integer.")
         sys.exit(1)
