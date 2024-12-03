@@ -67,7 +67,7 @@ def download_input(year: int, day: int):
         file.write(response.text)
 
     daypath = os.path.join(directory, f"day_{day:02}.py")
-    with open(inputspath, "w", encoding="utf-8") as file:
+    with open(daypath, "w", encoding="utf-8") as file:
         file.write("""f = [e[:-1] for e in list(open("input.txt"))]""")
 
     print(f"Files {inputspath} and {daypath} properly created")
