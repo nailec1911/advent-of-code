@@ -15,29 +15,33 @@ for i, line in enumerate(f):
         break
 
 
-def turn(f, start, dir):
+def turn(f, start, dir, first):
     i,j = start
-    t = True
-    while 0 <= i < len(f) and 0 <= j < len(f[0]) and t:
-        if type(f[i][j]) != list:
-            f[i][j] = []
-        f[i][j].append(soldat[dir])
+    loop = False
+    changedir = False
+    while 0 <= i < len(f) and 0 <= j < len(f[0]) and not loop:
+        if changedir or first:
+            if type(f[i][j]) != list:
+                f[i][j] = []
+            f[i][j].append(soldat[dir])
 
         d1, d2 = dirs[dir]
         if not (0 <= i + d1 < len(f) and 0 <= j + d2 < len(f[0])):
             break
+        changedir = False
         while f[i + d1][j + d2] == '#':
             dir = (dir + 1) % 4
             d1, d2 = dirs[dir]
+            changedir = True
         i += dirs[dir][0]
         j += dirs[dir][1]
 
         if type(f[i][j]) == list and soldat[dir] in f[i][j]:
-            t = False
+            loop = True
 
     for i in range(len(f)):
         f[i] = [x[0] if type(x) == list else x  for x in f[i]]
-    return t
+    return loop
 
 
 
@@ -45,7 +49,7 @@ f = [list(e) for e in f]
 
 score2 = 0
 cp = [e[::] for e in f]
-turn(cp, start, dir)
+turn(cp, start, dir, True)
 
 
 test = [e[::] for e in f]
@@ -56,9 +60,9 @@ for m in range(a):
             continue
         test[m][n] = '#'
 
-        t = turn(test, start, dir)
+        loop = turn(test, start, dir, False)
         print(a, b, '|', m, n)
-        if not t:
+        if loop:
             score2 += 1
 
         test[m][n] = '.'
