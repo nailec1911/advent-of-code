@@ -30,5 +30,7 @@ while cycle < 75:
             next_count[e] += count
     prev_count = next_count
     cycle += 1
+    if cycle == 25:
+        print(sum(prev_count.values()))
 
 print(sum(prev_count.values()))
