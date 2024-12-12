@@ -1,14 +1,14 @@
 from collections import defaultdict
 from functools import cache
+from math import log10
 
 @cache
 def splitstone(e):
     if e == 0:
         return [1]
-    s = str(e)
-    n = len(s)
-    if n % 2 == 0:
-        mid = n // 2
+    n = log10(e)
+    mid, modn = divmod(n, 2)
+    if modn == 0:
         divisor = 10 ** mid
         a, b = divmod(e, divisor)
         return [a, b]
