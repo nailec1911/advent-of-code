@@ -43,17 +43,16 @@ def get_score(f, size_shortcut):
     score = 0
     for i, l in enumerate(f):
         for j, start in enumerate(l):
-            if not isinstance(start, int):
+            if start == '#':
                 continue
             for x, y in shortcut_pos:
                 tx, ty = i + x, j + y
                 if not (0 <= tx < len(f) and 0 <= ty < len(f[0])):
                     continue
-                if not isinstance(f[tx][ty], int):
+                if f[tx][ty] == '#':
                     continue
                 if start > f[tx][ty]:
                     continue
-                dist = abs(x + y)
                 dist = f[tx][ty] - start - abs(x) - abs(y)
                 if dist >= 100:
                     score += 1
