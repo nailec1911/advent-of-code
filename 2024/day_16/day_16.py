@@ -40,7 +40,6 @@ f = [
     "#################",
 ]
 
-@jit
 def get_score(f, x, y):
     pq = []
     heapq.heappush(pq, (0, x, y, '>', []))
