@@ -18,6 +18,7 @@ The repository is organized by year:
 
 Each year's folder contains my solutions for that year's challenges and the informations on how I did it and the general context.
 In 2023 I did golf code, it's pretty fun go check it.
+In 2024 my objective was to do the 25 days, get a good score, and have a clean code.
 
 ## Notes
 
