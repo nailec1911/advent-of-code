@@ -17,7 +17,7 @@ fn main() {
 
     match args.day {
         1 => days::day01::run(),
-        // 2 => days::day02::run(),
+        2 => days::day02::run(),
         _ => eprintln!("Day {} not implemented yet!", args.day),
     }
 }
