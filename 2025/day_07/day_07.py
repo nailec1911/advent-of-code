@@ -18,36 +18,21 @@ f = [
 ]
 
 
-f = [e[:-1] for e in list(open("input.txt"))]
+f = [[0 if x == '.' else x for x in e[:-1]] for e in list(open("input.txt"))]
 
+
+f[0][f[0].index('S')] = 1
 
 res = 0
-res2 = 0
-# f[0] = f[0].replace('S', '|')
-f = [list(e) for e in f]
-
-for i in range(len(f)):
-    for j in range(len(f[0])):
-        if f[i][j] == '.':
-            f[i][j] = 0
-        if f[i][j] == 'S':
-            f[i][j] = 1
-
 for i in range(1, len(f)):
     for j in range(len(f[0])):
-        if f[i - 1][j] not in  [0, '^']:
+        if f[i - 1][j] not in [0, '^']:
             if f[i][j] != '^' and f[i - 1][j] != '^':
                 f[i][j] += f[i - 1][j]
             if f[i][j] == '^':
                 f[i][j - 1] += f[i - 1][j]
                 f[i][j + 1]  += f[i - 1][j]
-                # if
                 res += 1
 
-res2 = 0
-for e in f[-1]:
-    if e!= '^':
-        res2 += e
-
 print(res)
-print(res2)
+print(sum(e for e in f[-1] if e != '^'))
