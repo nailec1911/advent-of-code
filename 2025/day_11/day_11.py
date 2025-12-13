@@ -29,6 +29,7 @@ f = [
 
 
 from functools import cache
+
 f = [e[:-1].split(": ") for e in list(open("input.txt"))]
 
 graph = {}
@@ -36,17 +37,8 @@ for node, conn in f:
     outs = conn.split(' ')
     graph[node] = outs
 
-def dept_search(graph, node):
-    if node == "out":
-        return 1
-    outs = graph[node]
-    print(outs)
-    if not outs:
-        return 0
-    return sum(dept_search(graph, out) for out in outs)
-
 @cache
-def dept_search2(node, fft, dac):
+def dfs(node, fft, dac):
     if node == "out":
         return 1 if fft and dac else 0
     outs = graph[node]
@@ -56,7 +48,7 @@ def dept_search2(node, fft, dac):
         dac = True
     if not outs:
         return 0
-    return sum(dept_search2(out, fft, dac) for out in outs)
+    return sum(dfs(out, fft, dac) for out in outs)
 
-# print(dept_search(graph, "you"))
-print(dept_search2("svr", False, False))
+print(dfs("you", True, True))
+print(dfs("svr", False, False))
